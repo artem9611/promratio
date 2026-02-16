@@ -1,25 +1,27 @@
 import { MetadataRoute } from "next";
-import { getAllArticles, getAllCategories } from "@/lib/articles";
+import { NAV_STRUCTURE } from "@/lib/navigation";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://promratio.vercel.app";
 
-  const articles = getAllArticles().map((article) => ({
-    url: `${baseUrl}/articles/${article.slug}`,
-    lastModified: new Date(article.date),
-  }));
-
-  const categories = getAllCategories().map((category) => ({
-    url: `${baseUrl}/category/${category.slug}`,
-    lastModified: new Date(),
-  }));
-
-  return [
+  const staticPages = [
     {
       url: baseUrl,
       lastModified: new Date(),
     },
-    ...articles,
-    ...categories,
   ];
+
+  const categoryPages = NAV_STRUCTURE.map((group) => ({
+    url: `${baseUrl}/category/${group.slug}`,
+    lastModified: new Date(),
+  }));
+
+  const childPages = NAV_STRUCTURE.flatMap((group) =>
+    group.children?.map((child) => ({
+      url: `${baseUrl}/category/${group.slug}/${child.slug}`,
+      lastModified: new Date(),
+    })) ?? []
+  );
+
+  return [...staticPages, ...categoryPages, ...childPages];
 }
