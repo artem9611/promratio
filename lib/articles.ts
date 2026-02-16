@@ -1,37 +1,63 @@
-export const articles = [
+export type Article = {
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+  parent: string;
+  category: string;
+  special?: boolean;
+};
+
+export const articles: Article[] = [
   {
     slug: "ekonomika-stanka",
-    title: "Экономика одного станка",
-    excerpt:
-      "Разбираем, где в реальности теряется прибыль на производстве и как считать эффективность оборудования.",
-    author: "Артём Облеухов",
-    date: "2026-02-16",
-    content: `
-Производство редко теряет деньги в очевидных местах. 
-
-Чаще всего убытки скрыты в простоях, неправильной загрузке оборудования и отсутствии системного анализа.
-
-Рациональный подход начинается с цифр. 
-Если станок работает 60% времени — это не проблема станка. 
-Это проблема управления.
-
-AI может помочь, но только если есть данные.
-`,
+    title: "Экономика станка: где теряется маржа",
+    description: "Разбор структуры себестоимости обработки.",
+    date: "2026-02-10",
+    parent: "ekonomika",
+    category: "sebestoimost",
   },
   {
-    slug: "ai-v-mashinostroenii",
-    title: "AI в машиностроении: иллюзия внедрения",
-    excerpt:
-      "Почему большинство внедрений искусственного интеллекта не дают результата и как отличить маркетинг от реальности.",
-    author: "Артём Облеухов",
-    date: "2026-02-15",
-    content: `
-AI в промышленности часто становится витриной.
-
-Покупается софт, делается презентация, но процессы не меняются.
-
-Без цифровой дисциплины данные остаются мусором.
-А без данных AI — просто модное слово.
-`,
+    slug: "volfram-2026",
+    title: "Вольфрам 2026: Хроника Идеального Шторма",
+    description:
+      "25 причин, почему дешёвого инструмента больше не будет.",
+    date: "2026-02-16",
+    parent: "ekonomika",
+    category: "sebestoimost",
+    special: true,
   },
 ];
+
+export function getAllArticles() {
+  return articles.sort(
+    (a, b) =>
+      new Date(b.date).getTime() -
+      new Date(a.date).getTime()
+  );
+}
+
+export function getArticleBySlug(slug: string) {
+  return articles.find((a) => a.slug === slug);
+}
+
+export function getArticlesByCategory(
+  parent: string,
+  category: string
+) {
+  return articles.filter(
+    (a) =>
+      a.parent === parent &&
+      a.category === category
+  );
+}
+
+export function getAllCategories(parent: string) {
+  return Array.from(
+    new Set(
+      articles
+        .filter((a) => a.parent === parent)
+        .map((a) => a.category)
+    )
+  );
+}

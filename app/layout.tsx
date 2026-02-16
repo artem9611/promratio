@@ -1,13 +1,10 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
+import Navbar from "@/components/Navbar";
+import type { Metadata } from "next";
 
-const inter = Inter({
-  subsets: ["latin", "cyrillic"],
-});
-
-export const metadata = {
+export const metadata: Metadata = {
   title: "ПромРацио",
-  description: "Инженерное медиа о рациональном мышлении в промышленности.",
+  description: "Инженерная аналитика и экономика производства",
 };
 
 export default function RootLayout({
@@ -17,7 +14,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru">
-      <body className={`${inter.className} bg-white text-black antialiased`}>
+      <body className="bg-white text-black">
+        <Navbar />
         {children}
       </body>
     </html>
